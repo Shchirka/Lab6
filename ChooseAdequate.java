@@ -1,5 +1,8 @@
 package Lab6;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class ChooseAdequate {
     public  static double[][] mini_kohren = {{9985, 9750, 9392, 9057, 8772},
             {9669, 8709, 7977, 7457, 7071},
@@ -63,6 +66,8 @@ public class ChooseAdequate {
         double y1 = 0, y2 = 0, y3 = 0, y4 = 0, y5 = 0, y6 = 0, y7= 0, y8 = 0, y9= 0, y10= 0, y11= 0, y12 = 0, y13 = 0, y14 = 0, y15 = 0; // середні значення функцій відгуку в рядках
 
         double b0, b1, b2, b3, b12, b13, b23, b123; // коефіцієнти рівняння регресії
+        long start1 = 0, start2 = 0, start4 = 0, start5 = 0, start7 = 0, start8 = 0, finish1 = 0, finish2 = 0, finish3 = 0, finish4 = 0,
+                finish5 = 0, finish6 = 0, finish7 = 0, finish8 = 0, finish9 = 0;
 
         array_x[0][0] = x1min; array_x[1][0] = x1min; array_x[2][0] = x1min; array_x[3][0] = x1min;
         array_x[4][0] = x1max; array_x[5][0] = x1max; array_x[6][0] = x1max; array_x[7][0] = x1max;
@@ -130,6 +135,7 @@ public class ChooseAdequate {
 
             double exp_kohren = 0;
             double disp1 = 0, disp2 = 0, disp3 = 0, disp4 = 0, disp5 = 0, disp6 = 0, disp7 = 0, disp8 = 0;
+            start1 = System.nanoTime();
             do {
                 exp_kohren = 0;
                 double[][] ex_array = new double[array_y.length][m];
@@ -278,7 +284,11 @@ public class ChooseAdequate {
             } while (exp_kohren > (mini_kohren[n-2][(m-2) - 1])/10000);
             m -= 1;
 
+            finish1 = System.nanoTime();
+
             System.out.println("Дисперсія однорідна при " + m + " дослідах");
+
+            start2 = System.nanoTime();
 
             int sum_n = 0;
             for(int i = 1; i <= n; i++){
@@ -337,6 +347,8 @@ public class ChooseAdequate {
                 d += 1;
             }
 
+            finish2 = System.nanoTime();
+
 
             double[] some_array_mid_y = new double[n];
             for(int i = 0; i < some_array_mid_y.length; i++){
@@ -353,9 +365,11 @@ public class ChooseAdequate {
 
             if(fp < mini_fisher[(m-1)*n - 1][n - d - 1]){
                 System.out.println("Рівняння регресії адекватно оригіналу при рівні значимості " + q);
+                finish3 = System.nanoTime();
             }
 
             else {
+                finish3 = System.nanoTime();
                 System.out.println("Рівняння регресії неадекватно оригіналу при рівні значимості " + q);
                 b0 = 0;
                 b1 = 0;
@@ -366,6 +380,7 @@ public class ChooseAdequate {
                 b13 = 0;
                 b123 = 0;
 
+                start4 = System.nanoTime();
                 do {
                     exp_kohren = 0;
                     double[][] ex_array = new double[array_y.length][m];
@@ -450,7 +465,11 @@ public class ChooseAdequate {
                 } while (exp_kohren > (mini_kohren[n - 2][(m - 2) - 1]) / 10000);
                 m -= 1;
 
+                finish4 = System.nanoTime();
+
                 System.out.println("Дисперсія однорідна при " + m + " дослідах");
+
+                start5 = System.nanoTime();
 
                 beta0 = 0; beta1 = 0; beta2 = 0; beta3 = 0; beta12 = 0; beta13 = 0; beta23 = 0; beta123 = 0;
                 for (int i = 0; i < n; i++) {
@@ -534,6 +553,8 @@ public class ChooseAdequate {
                     d += 1;
                 }
 
+                finish5 = System.nanoTime();
+
                 some_array_mid_y = new double[n];
                 for (int i = 0; i < some_array_mid_y.length; i++) {
                     some_array_mid_y[i] = b0 + b1 * array_x[i][0] + b2 * array_x[i][1] + b3 * array_x[i][2]
@@ -576,9 +597,11 @@ public class ChooseAdequate {
                 if (fp < mini_fisher[(m - 1) * n - 1][n - d - 1]) {
                     System.out.println(text);
                     System.out.println("Рівняння регресії адекватно оригіналу при рівні значимості " + q);
+                    finish6 = System.nanoTime();
                 } else {
                     System.out.println(text);
                     System.out.println("Рівняння регресії неадекватно оригіналу при рівні значимості " + q);
+                    finish6 = System.nanoTime();
                     n = 15;
                     double[][] square_array_y = new double[15][m];
                     double suma = 0;
@@ -716,6 +739,8 @@ public class ChooseAdequate {
                         }
                         array_b[k] = deter(help_array) / deter(det);
                     }
+
+                    start7 = System.nanoTime();
                     do {
                         exp_kohren = 0;
                         double[][] ex_array = new double[square_array_y.length][m];
@@ -831,6 +856,7 @@ public class ChooseAdequate {
                         m += 1;
 
                     } while (exp_kohren > (mini_kohren[n - 2][(m - 2) - 1]) / 10000);
+                    finish7 = System.nanoTime();
                     m -= 1;
                     System.out.println("Дисперсія однорідна при " + m + " дослідах");
 
@@ -898,6 +924,7 @@ public class ChooseAdequate {
                     }
 
 
+                    start8 = System.nanoTime();
                     double beta11 = 0, beta22 = 0, beta33 = 0;
                     beta0 = 0; beta1 = 0; beta2 = 0; beta3 = 0; beta12 = 0; beta13 = 0; beta23 = 0; beta123 = 0;
                     for (int i = 0; i < n; i++) {
@@ -1029,6 +1056,8 @@ public class ChooseAdequate {
                         d += 1;
                     }
 
+                    finish8 = System.nanoTime();
+
                     some_array_mid_y = new double[n];
                     for (int i = 0; i < some_array_mid_y.length; i++) {
                         if (i < 8) {
@@ -1099,12 +1128,27 @@ public class ChooseAdequate {
                     if (fp < mini_fisher[f1][f2]) {
                         System.out.println(text1);
                         System.out.println("Рівняння регресії адекватно оригіналу при рівні значимості " + q);
+                        finish9 = System.nanoTime();
                     }
                     else{
                         System.out.println(text1);
                         System.out.println("Рівняння регресії неадекватно оригіналу при рівні значимості " + q);
+                        finish9 = System.nanoTime();
                     }
                 }
+            }
+
+            try(FileWriter writer = new FileWriter("Time.txt", false)){
+                writer.write("Однорідність: " + Double.toString((finish1 - start1)/Math.pow(10, 6)) + " мілісекунд \n" + Double.toString((finish4 - start4)/Math.pow(10, 6)) +
+                        " мілісекунд \n" + Double.toString((finish7 - start7)/Math.pow(10, 6)) + " мілісекунд \n");
+                writer.write("Значимі коефіцієнти: " + Double.toString((finish2 - start2)/Math.pow(10, 6)) + " мілісекунд \n" + Double.toString((finish5 - start5)/Math.pow(10, 6)) +
+                        " мілісекунд \n" + Double.toString((finish8 - start8)/Math.pow(10, 6)) + " мілісекунд \n");
+                writer.write("Перевірка на адекватність моделі: " + Double.toString((finish3 - finish2)/Math.pow(10, 6)) + " мілісекунд \n"
+                        + Double.toString((finish6 - finish5)/Math.pow(10, 6)) + " мілісекунд \n" + Double.toString((finish9 - finish8)/Math.pow(10, 6)) + " мілісекунд \n");
+                writer.flush();
+            }
+            catch(IOException ex){
+                System.out.println(ex.getMessage());
             }
     }
 
